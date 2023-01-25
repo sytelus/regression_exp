@@ -19,7 +19,7 @@ def get_poly_y(x, coefficients):
 def add_noise(y, level):
     return y + (np.random.rand(y.shape[0]) - 0.5) * level * 2 * y
 
-def poly_regress(ground_degree=10, data_len=2000, train_split=1000, noise_level=0.1):
+def poly_regress(ground_degree=4, data_len=20000, train_split=10000, noise_level=0.1):
     test_split = data_len - train_split
 
     poly_coefficients = get_rand_poly_coefficients(ground_degree)
@@ -38,5 +38,15 @@ def poly_regress(ground_degree=10, data_len=2000, train_split=1000, noise_level=
 
     # Calculate the loss (mean squared error)
     loss = mean_squared_error(y_test, y_pred, squared=False)
+    coef_loss = np.mean(np.abs(poly_coefficients - model))
 
-    return loss, x_test, y_test, y_pred
+    return loss, x_test, y_test, y_pred, coef_loss, poly_coefficients, model
+
+def main():
+    loss, x_test, y_test, y_pred, coef_loss, poly_coefficients, model = poly_regress(ground_degree=2)
+
+    print("Loss:", loss, np.min(y_test), np.max(y_test), np.mean(y_test), np.std(y_test))
+    print('Coefficient loss:', coef_loss, np.min(poly_coefficients), np.max(poly_coefficients), np.mean(poly_coefficients), np.std(poly_coefficients))
+
+if __name__ == "__main__":
+    main()
