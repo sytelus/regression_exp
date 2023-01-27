@@ -25,10 +25,11 @@ def poly_regress(ground_degree=4, data_len=20000, train_split=10000, noise_level
     poly_coefficients = get_rand_poly_coefficients(ground_degree)
 
     x_all = get_rand_x(-5, 5, data_len)
+    y_all = get_poly_y(x_all, poly_coefficients)
+
     x_train, x_test = x_all[:train_split], x_all[test_split:]
     x_train = add_noise(x_train, level=noise_level)
 
-    y_all = get_poly_y(x_all, poly_coefficients)
     y_train, y_test = y_all[:train_split], y_all[test_split:]
     y_train = add_noise(y_train, level=noise_level)
 
@@ -42,11 +43,3 @@ def poly_regress(ground_degree=4, data_len=20000, train_split=10000, noise_level
 
     return loss, x_test, y_test, y_pred, coef_loss, poly_coefficients, model
 
-def main():
-    loss, x_test, y_test, y_pred, coef_loss, poly_coefficients, model = poly_regress(ground_degree=2)
-
-    print("Loss:", loss, np.min(y_test), np.max(y_test), np.mean(y_test), np.std(y_test))
-    print('Coefficient loss:', coef_loss, np.min(poly_coefficients), np.max(poly_coefficients), np.mean(poly_coefficients), np.std(poly_coefficients))
-
-if __name__ == "__main__":
-    main()
